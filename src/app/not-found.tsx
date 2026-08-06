@@ -1,6 +1,6 @@
 import { AlertCircle } from 'lucide-react';
 import Link from 'next/link';
-import { Button } from '@/components/ui/button';
+import { buttonVariants } from '@/components/ui/button';
 
 export default function NotFound() {
   return (
@@ -15,9 +15,9 @@ export default function NotFound() {
             The page you are looking for doesn&apos;t exist or has been moved.
           </p>
         </div>
-        <Button asChild size="lg">
-          <Link href="/">Return to Home</Link>
-        </Button>
+        <Link href="/" className={buttonVariants({ size: 'lg' })}>
+          Return to Home
+        </Link>
       </div>
     </div>
   );

@@ -1,4 +1,6 @@
 export const APPLICATION_CONSTANTS = {
+  ADMISSION_START_SEQUENCE: 3000,
+  ADMISSION_PREFIX: 'BPH',
   STATUS: {
     DRAFT: 'draft',
     SUBMITTED: 'submitted',
