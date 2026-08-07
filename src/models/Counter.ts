@@ -1,22 +1,18 @@
-import mongoose, { Schema, Model } from 'mongoose';
+import mongoose, { Schema, Document } from 'mongoose';
 
-export interface ICounter {
+export interface ICounter extends Document<string> {
   _id: string;
-  sequence: number;
+  nextSequence: number;
 }
 
-const counterSchema = new Schema<ICounter>({
-  _id: {
-    type: String,
-    required: true,
+const CounterSchema = new Schema<ICounter>(
+  {
+    _id: { type: String, required: true },
+    nextSequence: { type: Number, default: 1001 },
   },
-  sequence: {
-    type: Number,
-    default: 3000,
-  },
-});
+  { _id: false, versionKey: false },
+);
 
-const Counter: Model<ICounter> =
-  mongoose.models.Counter || mongoose.model<ICounter>('Counter', counterSchema);
-
-export default Counter;
+// Prevent mongoose from recompiling the model in development (HMR)
+export const Counter =
+  mongoose.models.Counter || mongoose.model<ICounter>('Counter', CounterSchema);
