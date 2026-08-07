@@ -13,7 +13,7 @@ export const markSchema = z
     path: ['obtainedMarks'],
   });
 
-export const marksArraySchema = z.array(markSchema).min(1, 'At least one subject mark is required');
+export const marksArraySchema = z.array(markSchema).optional().default([]);
 
 export type MarkInput = z.infer<typeof markSchema>;
 export type MarksArrayInput = z.infer<typeof marksArraySchema>;

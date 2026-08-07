@@ -2,7 +2,8 @@ import { PersonalDetailsStep } from '../components/steps/PersonalDetailsStep';
 import { QualificationStep } from '../components/steps/QualificationStep';
 import { MarksStep } from '../components/steps/MarksStep';
 import { UploadsStep } from '../components/steps/UploadsStep';
-import { PreviewStep } from '../components/steps/PreviewStep';
+import { BankDetailsStep } from '../components/steps/BankDetailsStep';
+import { DeclarationStep } from '../components/steps/DeclarationStep';
 
 export interface StepConfig {
   id: string;
@@ -10,6 +11,7 @@ export interface StepConfig {
   description: string;
   component: React.ComponentType;
   validationFields?: string[];
+  isOptional?: boolean;
 }
 
 export const APPLICATION_STEPS: StepConfig[] = [
@@ -18,34 +20,43 @@ export const APPLICATION_STEPS: StepConfig[] = [
     title: 'Personal Details',
     description: 'Basic information and communication details',
     component: PersonalDetailsStep,
-    validationFields: ['personalDetails'], // Fields to validate before moving next
+    validationFields: ['personalDetails'],
+  },
+  {
+    id: 'uploads',
+    title: 'Upload Documents',
+    description: 'Upload required documents',
+    component: UploadsStep,
+    validationFields: ['uploads'],
   },
   {
     id: 'qualification',
-    title: 'Qualification',
+    title: 'Qualification Details',
     description: 'Academic details of previous study',
     component: QualificationStep,
     validationFields: ['qualification'],
   },
   {
     id: 'marks',
-    title: 'Marks',
-    description: 'Marks obtained in subjects',
+    title: 'Marks Obtained',
+    description: 'Marks obtained in subjects (Optional)',
     component: MarksStep,
     validationFields: ['marks'],
+    isOptional: true,
   },
   {
-    id: 'uploads',
-    title: 'Uploads',
-    description: 'Upload required documents',
-    component: UploadsStep,
-    validationFields: ['uploads'],
+    id: 'bank-details',
+    title: 'Bank Details',
+    description: 'Provide your bank account details (Optional)',
+    component: BankDetailsStep,
+    validationFields: [], // Will add fields when schema is defined
+    isOptional: true,
   },
   {
-    id: 'preview',
-    title: 'Preview',
-    description: 'Review your application before submission',
-    component: PreviewStep,
-    validationFields: [], // Final step doesn't need to validate specific sub-fields on "Next", as it's "Submit"
+    id: 'declaration',
+    title: 'Declaration',
+    description: 'Final confirmation and submission',
+    component: DeclarationStep,
+    validationFields: [],
   },
 ];
