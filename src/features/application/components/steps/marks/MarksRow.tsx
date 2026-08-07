@@ -24,7 +24,11 @@ export function MarksRow({ index, subjectName }: MarksRowProps) {
 
   return (
     <tr className="bg-card">
-      <td className="px-4 py-3 font-medium min-w-[150px]">{subjectName}</td>
+      <td className="px-4 py-3 font-medium min-w-[150px]">
+        {subjectName}
+        <input type="hidden" {...control.register(`marks.${index}.subjectCode` as const)} />
+        <input type="hidden" {...control.register(`marks.${index}.subjectName` as const)} />
+      </td>
       <td className="px-4 py-3 align-top min-w-[120px]">
         <ControlledNumberInput
           name={`marks.${index}.maximumMarks`}

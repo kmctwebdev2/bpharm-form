@@ -10,17 +10,7 @@ import {
 import { Input } from '@/components/ui/input';
 
 export function MarksTable() {
-  const { setValue, getValues, control } = useFormContext();
-
-  React.useEffect(() => {
-    const currentMarks = getValues('marks');
-    if (!currentMarks || currentMarks.length === 0) {
-      SUBJECTS.forEach((subject, index) => {
-        setValue(`marks.${index}.subjectCode`, subject.code);
-        setValue(`marks.${index}.subjectName`, subject.name);
-      });
-    }
-  }, [setValue, getValues]);
+  const { control } = useFormContext();
 
   // Watch the entire array for total calculations
   const marks = useWatch({ control, name: 'marks' });

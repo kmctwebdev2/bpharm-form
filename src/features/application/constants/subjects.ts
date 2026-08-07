@@ -7,3 +7,8 @@ export const SUBJECTS = [
   { code: 'COMPUTER_SCIENCE', name: 'Computer Science' },
   { code: 'BIOLOGY', name: 'Biology' },
 ];
+
+export const DEFAULT_MARKS = SUBJECTS.map((subject) => ({
+  subjectCode: subject.code,
+  subjectName: subject.name,
+}));

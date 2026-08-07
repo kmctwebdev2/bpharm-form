@@ -31,6 +31,7 @@ export function BankDetailsStep() {
             name="bankDetails.ifscCode"
             label="IFSC Code"
             placeholder="e.g. SBIN0001234"
+            uppercase
           />
         </div>
       </div>

@@ -6,9 +6,16 @@ import { Label } from '@/components/ui/label';
 interface ControlledInputProps extends React.InputHTMLAttributes<HTMLInputElement> {
   name: string;
   label: string;
+  uppercase?: boolean;
 }
 
-export function ControlledInput({ name, label, ...props }: ControlledInputProps) {
+export function ControlledInput({
+  name,
+  label,
+  uppercase,
+  onChange,
+  ...props
+}: ControlledInputProps) {
   const { control } = useFormContext();
 
   return (
@@ -24,6 +31,11 @@ export function ControlledInput({ name, label, ...props }: ControlledInputProps)
             id={name}
             {...field}
             {...props}
+            onChange={(e) => {
+              const value = uppercase ? e.target.value.toUpperCase() : e.target.value;
+              field.onChange(value);
+              if (onChange) onChange(e);
+            }}
             className={error ? 'border-destructive focus-visible:ring-destructive' : ''}
           />
           {error && <p className="text-sm text-destructive">{error.message}</p>}
