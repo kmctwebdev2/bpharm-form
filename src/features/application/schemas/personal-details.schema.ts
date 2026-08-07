@@ -9,14 +9,11 @@ export const personalDetailsSchema = z.object({
     .max(100, 'Name cannot exceed 100 characters')
     .transform(sanitizeString),
   gender: z.nativeEnum(Gender, { message: 'Gender is required' }),
-  dateOfBirth: z.preprocess(
-    (arg) => {
-      if (typeof arg === 'string' || arg instanceof Date) return new Date(arg);
-    },
-    z.date({ message: 'Date of birth is required' }).refine((date) => calculateAge(date) >= 16, {
+  dateOfBirth: z.coerce
+    .date({ message: 'Valid date of birth is required' })
+    .refine((date) => calculateAge(date) >= 16, {
       message: 'Applicant must be at least 16 years old',
     }),
-  ),
   email: z
     .string()
     .email('Invalid email address format')
