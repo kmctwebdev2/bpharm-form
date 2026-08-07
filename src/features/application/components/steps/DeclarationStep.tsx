@@ -1,8 +1,92 @@
+import React, { useEffect, useState } from 'react';
+import Image from 'next/image';
+import { useFormContext, useWatch } from 'react-hook-form';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { FormSection } from '@/components/form/FormSection';
+import { SectionHeader } from '@/components/form/SectionHeader';
+import { ControlledCheckbox } from '@/components/form/ControlledCheckbox';
+import { ControlledInput } from '@/components/form/ControlledInput';
+import { ControlledDatePicker } from '@/components/form/ControlledDatePicker';
+import { Label } from '@/components/ui/label';
+
 export function DeclarationStep() {
+  const { control } = useFormContext();
+  const [signaturePreview, setSignaturePreview] = useState<string | null>(null);
+
+  // Watch the signature file from the uploads step
+  const signatureFile = useWatch({
+    control,
+    name: 'uploads.signature',
+  });
+
+  useEffect(() => {
+    let objectUrl: string | null = null;
+    if (signatureFile && signatureFile instanceof File) {
+      objectUrl = URL.createObjectURL(signatureFile);
+      // eslint-disable-next-line react-hooks/set-state-in-effect
+      setSignaturePreview(objectUrl);
+    } else {
+      setSignaturePreview(null);
+    }
+
+    return () => {
+      if (objectUrl) {
+        URL.revokeObjectURL(objectUrl);
+      }
+    };
+  }, [signatureFile]);
+
   return (
-    <div className="flex flex-col items-center justify-center p-12 text-center border rounded-lg border-dashed text-muted-foreground">
-      <h3 className="text-lg font-medium mb-2">Declaration</h3>
-      <p>Coming in next phase</p>
-    </div>
+    <FormSection>
+      <SectionHeader
+        title="Declaration"
+        description="Please read and accept the declaration to proceed"
+      />
+
+      <Card>
+        <CardHeader>
+          <CardTitle>Applicant Declaration</CardTitle>
+          <CardDescription>
+            You must agree to the following terms before submitting your application.
+          </CardDescription>
+        </CardHeader>
+        <CardContent className="space-y-6">
+          <div className="bg-muted p-2 rounded-md border border-border">
+            <ControlledCheckbox
+              name="declaration.accepted"
+              label="I hereby declare that the information furnished above is true and correct to the best of my knowledge."
+            />
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <ControlledInput
+              name="declaration.place"
+              label="Place"
+              placeholder="Enter your location"
+            />
+            <ControlledDatePicker name="declaration.date" label="Date" />
+          </div>
+
+          <div className="space-y-3 pt-4 border-t">
+            <Label className="text-sm font-medium text-foreground">Signature Preview</Label>
+            <div className="relative flex items-center justify-center w-48 h-24 bg-muted/50 border-2 border-dashed rounded-md overflow-hidden p-2">
+              {signaturePreview ? (
+                <Image
+                  src={signaturePreview}
+                  alt="Candidate Signature"
+                  fill
+                  className="object-contain"
+                />
+              ) : (
+                <p className="text-xs text-muted-foreground">No signature uploaded.</p>
+              )}
+            </div>
+            <p className="text-xs text-muted-foreground">
+              This signature was uploaded in the Documents step.
+            </p>
+          </div>
+        </CardContent>
+      </Card>
+    </FormSection>
   );
 }

@@ -28,6 +28,9 @@ export function ApplicationProvider({ children }: ApplicationProviderProps) {
     mode: 'onChange',
     defaultValues: {
       marks: DEFAULT_MARKS,
+      declaration: {
+        date: new Date().toISOString(),
+      },
     },
   });
 

@@ -4,6 +4,7 @@ import { qualificationSchema } from './qualification.schema';
 import { marksArraySchema } from './marks.schema';
 import { uploadsSchema } from './uploads.schema';
 import { bankDetailsSchema } from './bank-details.schema';
+import { declarationSchema } from './declaration.schema';
 
 export const applicationSchema = z.object({
   personalDetails: personalDetailsSchema,
@@ -11,6 +12,7 @@ export const applicationSchema = z.object({
   marks: marksArraySchema,
   uploads: uploadsSchema,
   bankDetails: bankDetailsSchema,
+  declaration: declarationSchema,
 });
 
 export type ApplicationInput = z.infer<typeof applicationSchema>;
