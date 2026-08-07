@@ -3,7 +3,11 @@ import { FILE_LIMITS, ACCEPTED_FILE_TYPES } from '../constants/file-limits';
 
 const isBrowser = typeof window !== 'undefined';
 
-const createFileSchema = (allowedTypes: string[], maxSize: number, typeErrorMessage: string) => {
+export const createFileSchema = (
+  allowedTypes: string[],
+  maxSize: number,
+  typeErrorMessage: string,
+) => {
   return z
     .any()
     .refine((file) => {

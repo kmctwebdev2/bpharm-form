@@ -46,6 +46,9 @@ export function ControlledDatePicker({ name, label }: ControlledDatePickerProps)
                 selected={field.value ? new Date(field.value) : undefined}
                 onSelect={field.onChange}
                 disabled={(date) => date > new Date() || date < new Date('1900-01-01')}
+                captionLayout="dropdown"
+                startMonth={new Date(1900, 0)}
+                endMonth={new Date()}
                 // @ts-expect-error Shadcn Calendar typing issue
                 initialFocus
               />
