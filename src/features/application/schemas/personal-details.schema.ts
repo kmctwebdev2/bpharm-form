@@ -33,7 +33,7 @@ export const personalDetailsSchema = z.object({
     .min(2, 'Religion is required')
     .max(50, 'Religion cannot exceed 50 characters')
     .transform(sanitizeString),
-  annualIncome: z
+  annualIncome: z.coerce
     .number()
     .positive('Annual income must be positive')
     .min(0, 'Annual income cannot be negative'),
