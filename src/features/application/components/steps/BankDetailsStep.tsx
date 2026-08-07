@@ -1,8 +1,39 @@
+import React from 'react';
+import { ControlledInput } from '@/components/form/ControlledInput';
+
 export function BankDetailsStep() {
   return (
-    <div className="flex flex-col items-center justify-center p-12 text-center border rounded-lg border-dashed text-muted-foreground">
-      <h3 className="text-lg font-medium mb-2">Bank Details</h3>
-      <p>Coming in next phase (Optional)</p>
+    <div className="space-y-6">
+      <div>
+        <h4 className="text-lg font-medium mb-2">Bank Details (Optional)</h4>
+        <p className="text-sm text-muted-foreground mb-6">
+          Provide your bank account information. You may skip this step if you prefer.
+        </p>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <ControlledInput
+            name="bankDetails.accountHolderName"
+            label="Account Holder Name"
+            placeholder="Full name as in bank"
+          />
+          <ControlledInput
+            name="bankDetails.bankName"
+            label="Bank Name"
+            placeholder="e.g. State Bank of India"
+          />
+          <ControlledInput name="bankDetails.branch" label="Branch" placeholder="Branch name" />
+          <ControlledInput
+            name="bankDetails.accountNumber"
+            label="Account Number"
+            placeholder="Numbers only"
+          />
+          <ControlledInput
+            name="bankDetails.ifscCode"
+            label="IFSC Code"
+            placeholder="e.g. SBIN0001234"
+          />
+        </div>
+      </div>
     </div>
   );
 }

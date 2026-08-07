@@ -1,8 +1,16 @@
+import React from 'react';
+import { MarksTable } from './marks/MarksTable';
+
 export function MarksStep() {
   return (
-    <div className="flex flex-col items-center justify-center p-12 text-center border rounded-lg border-dashed text-muted-foreground">
-      <h3 className="text-lg font-medium mb-2">Marks Entry</h3>
-      <p>Coming in next phase</p>
+    <div className="space-y-6">
+      <div>
+        <h4 className="text-lg font-medium mb-2">Marks Obtained (Optional)</h4>
+        <p className="text-sm text-muted-foreground mb-6">
+          Enter your marks below. If you have not received your marks yet, you may skip this step.
+        </p>
+        <MarksTable />
+      </div>
     </div>
   );
 }

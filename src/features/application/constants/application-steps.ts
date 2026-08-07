@@ -49,7 +49,7 @@ export const APPLICATION_STEPS: StepConfig[] = [
     title: 'Bank Details',
     description: 'Provide your bank account details (Optional)',
     component: BankDetailsStep,
-    validationFields: [], // Will add fields when schema is defined
+    validationFields: ['bankDetails'],
     isOptional: true,
   },
   {
