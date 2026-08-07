@@ -78,7 +78,7 @@ export function ControlledFileUpload({
               ) : (
                 <div className="flex flex-col items-center w-full">
                   <div className="flex items-center justify-center w-12 h-12 rounded-full bg-primary/10 mb-3">
-                    {file.type.includes('image') ? (
+                    {file?.type?.includes('image') ? (
                       <CheckCircle className="w-6 h-6 text-primary" />
                     ) : (
                       <FileIcon className="w-6 h-6 text-primary" />

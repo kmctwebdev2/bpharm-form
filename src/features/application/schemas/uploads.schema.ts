@@ -1,8 +1,6 @@
 import { z } from 'zod';
 import { FILE_LIMITS, ACCEPTED_FILE_TYPES } from '../constants/file-limits';
 
-const isBrowser = typeof window !== 'undefined';
-
 export const createFileSchema = (
   allowedTypes: string[],
   maxSize: number,
@@ -11,19 +9,16 @@ export const createFileSchema = (
   return z
     .any()
     .refine((file) => {
-      // In SSR, we don't have File objects in the form yet, so we can pass or handle gracefully.
-      // But actually, this schema only runs on client side during form submission/validation.
-      if (!isBrowser) return true;
       if (!file) return false;
       return file instanceof File;
     }, 'File is required')
     .refine((file) => {
-      if (!isBrowser || !file) return true;
+      if (!file) return true; // Handled by first refine
       return allowedTypes.includes(file.type);
     }, typeErrorMessage)
     .refine(
       (file) => {
-        if (!isBrowser || !file) return true;
+        if (!file) return true;
         return file.size <= maxSize;
       },
       `File size must be less than ${maxSize / (1024 * 1024)}MB`,
