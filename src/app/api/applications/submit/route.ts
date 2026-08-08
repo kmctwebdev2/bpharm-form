@@ -56,7 +56,7 @@ export async function POST(request: Request) {
         photo: photo as File,
         signature: signature as File,
         sslcCertificate: sslcCertificate as File,
-        aadhaar: aadhaar as File,
+        aadhaar: aadhaar ? (aadhaar as File) : undefined,
         certificate: certificate ? (certificate as File) : undefined,
       },
     );

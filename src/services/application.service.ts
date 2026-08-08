@@ -9,7 +9,7 @@ export interface ApplicationFilesPayload {
   photo: File;
   signature: File;
   sslcCertificate: File;
-  aadhaar: File;
+  aadhaar?: File;
   certificate?: File; // Qualification certificate
 }
 
@@ -103,15 +103,17 @@ export class ApplicationService {
       );
       uploadedAssets.push(signatureResult);
 
-      // 3. Documents
       const sslcResult = await this.uploadToCloudinary(
         files.sslcCertificate,
         'admissions/documents',
       );
       uploadedAssets.push(sslcResult);
 
-      const aadhaarResult = await this.uploadToCloudinary(files.aadhaar, 'admissions/documents');
-      uploadedAssets.push(aadhaarResult);
+      let aadhaarResult;
+      if (files.aadhaar) {
+        aadhaarResult = await this.uploadToCloudinary(files.aadhaar, 'admissions/documents');
+        uploadedAssets.push(aadhaarResult);
+      }
 
       let certResult;
       if (files.certificate) {
@@ -125,7 +127,7 @@ export class ApplicationService {
           photo: photoResult.url,
           signature: signatureResult.url,
           sslcCertificate: sslcResult.url,
-          aadhaar: aadhaarResult.url,
+          aadhaar: aadhaarResult?.url,
           certificate: certResult?.url,
         },
       };

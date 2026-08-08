@@ -5,20 +5,24 @@ export const createFileSchema = (
   allowedTypes: string[],
   maxSize: number,
   typeErrorMessage: string,
+  isOptional: boolean = false,
 ) => {
   return z
     .any()
     .refine((file) => {
+      if (isOptional && !file) return true;
       if (!file) return false;
       return file instanceof File;
     }, 'File is required')
     .refine((file) => {
       if (!file) return true; // Handled by first refine
+      if (isOptional && !(file instanceof File)) return true;
       return allowedTypes.includes(file.type);
     }, typeErrorMessage)
     .refine(
       (file) => {
         if (!file) return true;
+        if (isOptional && !(file instanceof File)) return true;
         return file.size <= maxSize;
       },
       `File size must be less than ${maxSize / (1024 * 1024)}MB`,
@@ -45,6 +49,7 @@ export const uploadsSchema = z.object({
     ACCEPTED_FILE_TYPES.PDF,
     FILE_LIMITS.AADHAAR_MAX_SIZE,
     'Aadhaar Card must be a PDF document',
+    true, // isOptional
   ),
 });
 

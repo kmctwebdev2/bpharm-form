@@ -41,7 +41,7 @@ export function UploadsStep() {
           />
           <ControlledFileUpload
             name="uploads.aadhaar"
-            label="Aadhaar Card *"
+            label="Aadhaar Card (Optional)"
             accept={pdfAccept}
             maxSizeLabel="2MB"
           />
