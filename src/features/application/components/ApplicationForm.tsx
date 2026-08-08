@@ -115,10 +115,16 @@ export function ApplicationForm() {
     );
   }
 
+  const onInvalid = () => {
+    toast.error('Form Incomplete', {
+      description: 'Please fill all the required fields correctly before submitting.',
+    });
+  };
+
   return (
     <FormContainer>
       <div className="bg-card shadow-lg border-0 rounded-2xl p-6 md:p-8 mb-8">
-        <form onSubmit={handleSubmit(onSubmit)} className="space-y-10">
+        <form onSubmit={handleSubmit(onSubmit, onInvalid)} className="space-y-10">
           <div className="space-y-6">
             <h2 className="text-lg font-bold bg-muted text-primary px-4 py-3 rounded-md">
               Personal Details
