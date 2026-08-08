@@ -206,4 +206,43 @@ export class ApplicationService {
     const application = await Application.findOne({ applicationNumber }).lean();
     return application as IApplication | null;
   }
+
+  /**
+   * Verifies and recovers an application securely.
+   */
+  static async verifyAndRecoverApplication(
+    applicationNumber: string,
+    email: string,
+    dateOfBirth: string,
+  ): Promise<{ applicationNumber: string; applicantName: string } | null> {
+    await connectDB();
+
+    const normalizedEmail = email.trim().toLowerCase();
+    const dob = new Date(dateOfBirth);
+
+    // Create a start and end boundary for the day to avoid timezone matching issues
+    const startOfDay = new Date(dob);
+    startOfDay.setUTCHours(0, 0, 0, 0);
+
+    const endOfDay = new Date(dob);
+    endOfDay.setUTCHours(23, 59, 59, 999);
+
+    const application = await Application.findOne({
+      applicationNumber: applicationNumber.trim(),
+      'personalDetails.email': normalizedEmail,
+      'personalDetails.dateOfBirth': {
+        $gte: startOfDay,
+        $lte: endOfDay,
+      },
+    }).lean();
+
+    if (!application) {
+      return null;
+    }
+
+    return {
+      applicationNumber: application.applicationNumber,
+      applicantName: application.personalDetails.name,
+    };
+  }
 }

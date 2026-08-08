@@ -85,7 +85,7 @@ export function QualificationStep() {
             name="qualification.certificate"
             label="Upload Certificate of Qualifying Examination (Plus Two) *"
             accept={pdfAccept}
-            maxSizeLabel="5MB"
+            maxSizeLabel="2MB"
           />
         </div>
       </div>

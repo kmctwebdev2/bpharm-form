@@ -19,7 +19,7 @@ export default function Home() {
         </div>
 
         {/* Primary CTA */}
-        <div className="animate-in fade-in slide-in-from-bottom-8 duration-1000 delay-300">
+        <div className="animate-in fade-in slide-in-from-bottom-8 duration-1000 delay-300 flex flex-col items-center gap-6">
           <Link href="/apply">
             <Button
               size="lg"
@@ -28,6 +28,15 @@ export default function Home() {
               Start Application
             </Button>
           </Link>
+
+          <div className="flex flex-col items-center gap-2">
+            <p className="text-sm text-muted-foreground">Already submitted an application?</p>
+            <Link href="/download-application">
+              <Button variant="outline" className="rounded-full px-6">
+                Download Application
+              </Button>
+            </Link>
+          </div>
         </div>
 
         {/* Minimal Requirements Info */}
