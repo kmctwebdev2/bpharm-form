@@ -1,5 +1,5 @@
 import { apiResponse } from '@/lib/api-response';
-import { connectDB } from '@/lib/mongodb';
+import connectDB from '@/lib/mongodb';
 import { Counter } from '@/models/Counter';
 import { Application } from '@/models/Application';
 

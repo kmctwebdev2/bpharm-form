@@ -31,6 +31,7 @@ export function ControlledInput({
             id={name}
             {...field}
             {...props}
+            value={field.value ?? ''}
             onChange={(e) => {
               const value = uppercase ? e.target.value.toUpperCase() : e.target.value;
               field.onChange(value);

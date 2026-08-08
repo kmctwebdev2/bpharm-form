@@ -26,7 +26,7 @@ export function ControlledRadioGroup({ name, label, options }: ControlledRadioGr
           <Label className={error ? 'text-destructive' : ''}>{label}</Label>
           <RadioGroup
             onValueChange={field.onChange}
-            defaultValue={field.value}
+            value={field.value}
             className="flex flex-col space-y-1"
           >
             {options.map((option) => (

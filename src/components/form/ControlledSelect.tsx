@@ -33,7 +33,7 @@ export function ControlledSelect({ name, label, options, placeholder }: Controll
           <Label htmlFor={name} className={error ? 'text-destructive' : ''}>
             {label}
           </Label>
-          <Select onValueChange={field.onChange} defaultValue={field.value}>
+          <Select onValueChange={field.onChange} value={field.value}>
             <SelectTrigger
               id={name}
               className={error ? 'border-destructive focus:ring-destructive' : ''}

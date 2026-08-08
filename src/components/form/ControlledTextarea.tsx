@@ -24,6 +24,7 @@ export function ControlledTextarea({ name, label, ...props }: ControlledTextarea
             id={name}
             {...field}
             {...props}
+            value={field.value ?? ''}
             className={error ? 'border-destructive focus-visible:ring-destructive' : ''}
           />
           {error && <p className="text-sm text-destructive">{error.message}</p>}

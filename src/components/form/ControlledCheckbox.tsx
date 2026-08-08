@@ -18,7 +18,7 @@ export function ControlledCheckbox({ name, label, description }: ControlledCheck
       control={control}
       render={({ field, fieldState: { error } }) => (
         <div className="flex flex-row items-start space-x-3 space-y-0 rounded-md border p-4">
-          <Checkbox id={name} checked={field.value} onCheckedChange={field.onChange} />
+          <Checkbox id={name} checked={field.value ?? false} onCheckedChange={field.onChange} />
           <div className="space-y-1 leading-none">
             <Label htmlFor={name} className={`cursor-pointer ${error ? 'text-destructive' : ''}`}>
               {label}

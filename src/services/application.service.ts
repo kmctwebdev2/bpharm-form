@@ -1,6 +1,6 @@
 import { Readable } from 'stream';
 import { IApplication } from '@/types/application';
-import { connectDB } from '@/lib/mongodb';
+import connectDB from '@/lib/mongodb';
 import { Application } from '@/models/Application';
 import { Counter } from '@/models/Counter';
 import { cloudinary } from '@/lib/cloudinary';
