@@ -41,17 +41,17 @@ export function DeclarationStep() {
           <div className="rounded-md">
             <ControlledCheckbox
               name="declaration.accepted"
-              label="I hereby declare that the information furnished above is true and correct to the best of my knowledge."
+              label="I do hereby declare that the particulars given in the application are true to the best of my knowledge and belief. If any of the particulars given by me in this application is proved fraudulent at any later stage of admission, I shall be liable for disciplinary action and my admission shall become null and void. I shall produce the originals of the certificates at the time of interview. I have carefully read the prospectus thoroughly and I am ready to abide by the terms and conditions mentioned in it. *"
             />
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <ControlledInput
               name="declaration.place"
-              label="Place"
+              label="Place *"
               placeholder="Enter your location"
             />
-            <ControlledDatePicker name="declaration.date" label="Date" />
+            <ControlledDatePicker name="declaration.date" label="Date *" />
           </div>
 
           <div className="space-y-3 pt-4 border-t">

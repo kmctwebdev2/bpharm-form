@@ -79,7 +79,7 @@ export function ControlledFileUpload({
               {!file ? (
                 <>
                   <UploadCloud className="w-10 h-10 text-muted-foreground mb-4" />
-                  <p className="text-sm font-medium mb-1">Click to upload or drag and drop</p>
+                  <p className="text-sm font-medium mb-1">Click to upload</p>
                   <p className="text-xs text-muted-foreground mb-4">
                     {accept
                       .replace(/image\//g, '')
