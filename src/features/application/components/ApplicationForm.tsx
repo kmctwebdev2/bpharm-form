@@ -90,11 +90,7 @@ export function ApplicationForm() {
             <p className="text-sm font-medium text-muted-foreground mb-1">Application Number</p>
             <p className="text-xl font-bold">{applicationNumber}</p>
           </div>
-          <a
-            href={`${ROUTES.API.DOWNLOAD_PDF}?applicationNumber=${encodeURIComponent(applicationNumber)}`}
-            download
-            className="w-full"
-          >
+          <a href={ROUTES.API.DOWNLOAD_PDF(applicationNumber)} download className="w-full">
             <Button type="button" className="w-full">
               <Download className="mr-2 h-4 w-4" /> Download Application PDF
             </Button>

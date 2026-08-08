@@ -14,19 +14,36 @@ export interface ApplicationFilesPayload {
 }
 
 export class ApplicationService {
-  /**
-   * Generates a unique application number atomically using Counter collection.
-   */
   static async generateApplicationNumber(): Promise<{
     applicationNumber: string;
     sequence: number;
   }> {
     await connectDB();
-    const counter = await Counter.findOneAndUpdate(
+
+    // Attempt to increment the counter
+    let counter = await Counter.findOneAndUpdate(
       { _id: 'application_counter' },
       { $inc: { nextSequence: 1 } },
-      { new: true, upsert: true, setDefaultsOnInsert: true },
+      { new: true },
     );
+
+    // If it doesn't exist, create it with initial value 1001
+    if (!counter) {
+      try {
+        counter = await Counter.create({ _id: 'application_counter', nextSequence: 1001 });
+      } catch (error: unknown) {
+        // If there was a race condition and it was created, try incrementing again
+        if ((error as { code?: number }).code === 11000) {
+          counter = await Counter.findOneAndUpdate(
+            { _id: 'application_counter' },
+            { $inc: { nextSequence: 1 } },
+            { new: true },
+          );
+        } else {
+          throw error;
+        }
+      }
+    }
 
     if (!counter) {
       throw new Error('Failed to generate application number');
@@ -183,6 +200,8 @@ export class ApplicationService {
    * Retrieves an application by its application number.
    */
   static async getApplication(applicationNumber: string): Promise<IApplication | null> {
-    throw new Error(`Not implemented for ${applicationNumber}`);
+    await connectDB();
+    const application = await Application.findOne({ applicationNumber }).lean();
+    return application as IApplication | null;
   }
 }
