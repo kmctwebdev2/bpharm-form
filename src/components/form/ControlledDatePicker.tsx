@@ -20,9 +20,23 @@ export function ControlledDatePicker({ name, label }: ControlledDatePickerProps)
       name={name}
       control={control}
       render={({ field, fieldState: { error } }) => (
-        <div className="flex flex-col space-y-2 w-full">
-          <Label htmlFor={name} className={error ? 'text-destructive' : ''}>
-            {label}
+        <div className="space-y-2 w-full">
+          <Label
+            htmlFor={name}
+            className={error ? 'text-destructive' : 'text-sm font-medium text-foreground'}
+          >
+            {label.includes('*') ? (
+              <>
+                {label.split('*')[0]} <span className="text-destructive">*</span>
+                {label.split('*')[1] && (
+                  <span className="block text-xs font-normal text-muted-foreground mt-1">
+                    {label.split('*')[1]}
+                  </span>
+                )}
+              </>
+            ) : (
+              label
+            )}
           </Label>
           <Popover>
             <PopoverTrigger

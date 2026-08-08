@@ -86,32 +86,38 @@ export function PersonalDetailsStep() {
       <div className="border-t pt-6" />
 
       {/* Addresses */}
-      <div className="space-y-6">
-        <ControlledTextarea
-          name="personalDetails.permanentAddress"
-          label="Permanent Address *"
-          placeholder="Enter complete permanent address"
-          rows={3}
-        />
-
-        <div className="flex items-center space-x-2">
-          <Checkbox
-            id="same-address"
-            checked={sameAsPermanent}
-            onCheckedChange={(checked) => setSameAsPermanent(checked === true)}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div className="flex flex-col">
+          <ControlledTextarea
+            name="personalDetails.permanentAddress"
+            label="Permanent Address *"
+            placeholder="Enter complete permanent address"
+            rows={4}
           />
-          <Label htmlFor="same-address" className="text-sm font-medium leading-none cursor-pointer">
-            Communication Address same as Permanent Address
-          </Label>
         </div>
 
-        <ControlledTextarea
-          name="personalDetails.communicationAddress"
-          label="Communication Address *"
-          placeholder="Enter complete communication address"
-          rows={3}
-          disabled={sameAsPermanent}
-        />
+        <div className="flex flex-col space-y-4">
+          <ControlledTextarea
+            name="personalDetails.communicationAddress"
+            label="Communication Address *"
+            placeholder="Enter complete communication address"
+            rows={4}
+            disabled={sameAsPermanent}
+          />
+          <div className="flex items-center space-x-2">
+            <Checkbox
+              id="same-address"
+              checked={sameAsPermanent}
+              onCheckedChange={(checked) => setSameAsPermanent(checked === true)}
+            />
+            <Label
+              htmlFor="same-address"
+              className="text-sm font-medium leading-none cursor-pointer"
+            >
+              Communication Address same as Permanent Address
+            </Label>
+          </div>
+        </div>
       </div>
     </div>
   );

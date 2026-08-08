@@ -1,9 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import Image from 'next/image';
 import { useFormContext, useWatch } from 'react-hook-form';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { FormSection } from '@/components/form/FormSection';
-import { SectionHeader } from '@/components/form/SectionHeader';
+import { Card, CardContent } from '@/components/ui/card';
 import { ControlledCheckbox } from '@/components/form/ControlledCheckbox';
 import { ControlledInput } from '@/components/form/ControlledInput';
 import { ControlledDatePicker } from '@/components/form/ControlledDatePicker';
@@ -37,21 +35,10 @@ export function DeclarationStep() {
   }, [signatureFile]);
 
   return (
-    <FormSection>
-      <SectionHeader
-        title="Declaration"
-        description="Please read and accept the declaration to proceed"
-      />
-
-      <Card>
-        <CardHeader>
-          <CardTitle>Applicant Declaration</CardTitle>
-          <CardDescription>
-            You must agree to the following terms before submitting your application.
-          </CardDescription>
-        </CardHeader>
-        <CardContent className="space-y-6">
-          <div className="bg-muted p-2 rounded-md border border-border">
+    <div className="space-y-6">
+      <div className="shadow-none bg-transparent p-0">
+        <CardContent className="space-y-6 p-0">
+          <div className="rounded-md">
             <ControlledCheckbox
               name="declaration.accepted"
               label="I hereby declare that the information furnished above is true and correct to the best of my knowledge."
@@ -86,7 +73,7 @@ export function DeclarationStep() {
             </p>
           </div>
         </CardContent>
-      </Card>
-    </FormSection>
+      </div>
+    </div>
   );
 }

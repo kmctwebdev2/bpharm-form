@@ -43,7 +43,23 @@ export function ControlledFileUpload({
 
         return (
           <div className="space-y-2 w-full">
-            <Label className={error ? 'text-destructive' : ''}>{label}</Label>
+            <Label
+              htmlFor={name}
+              className={error ? 'text-destructive' : 'text-sm font-medium text-foreground'}
+            >
+              {label.includes('*') ? (
+                <>
+                  {label.split('*')[0]} <span className="text-destructive">*</span>
+                  {label.split('*')[1] && (
+                    <span className="block text-xs font-normal text-muted-foreground mt-1">
+                      {label.split('*')[1]}
+                    </span>
+                  )}
+                </>
+              ) : (
+                label
+              )}
+            </Label>
 
             <div
               className={`relative border-2 border-dashed rounded-lg p-6 flex flex-col items-center justify-center transition-colors

@@ -54,12 +54,14 @@ export function QualificationStep() {
           />
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          <ControlledInput
-            name="qualification.registerNumber"
-            label="Plus Two Register Number *"
-            placeholder="Enter register number"
-          />
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
+          <div className="md:col-span-2">
+            <ControlledInput
+              name="qualification.registerNumber"
+              label="Plus Two Register Number *"
+              placeholder="Enter register number"
+            />
+          </div>
           <ControlledSelect
             name="qualification.year"
             label="Year *"

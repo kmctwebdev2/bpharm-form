@@ -24,8 +24,22 @@ export function ControlledInput({
       control={control}
       render={({ field, fieldState: { error } }) => (
         <div className="space-y-2 w-full">
-          <Label htmlFor={name} className={error ? 'text-destructive' : ''}>
-            {label}
+          <Label
+            htmlFor={name}
+            className={error ? 'text-destructive' : 'text-sm font-medium text-foreground'}
+          >
+            {label.includes('*') ? (
+              <>
+                {label.split('*')[0]} <span className="text-destructive">*</span>
+                {label.split('*')[1] && (
+                  <span className="block text-xs font-normal text-muted-foreground mt-1">
+                    {label.split('*')[1]}
+                  </span>
+                )}
+              </>
+            ) : (
+              label
+            )}
           </Label>
           <Input
             id={name}

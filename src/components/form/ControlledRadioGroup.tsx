@@ -23,7 +23,20 @@ export function ControlledRadioGroup({ name, label, options }: ControlledRadioGr
       control={control}
       render={({ field, fieldState: { error } }) => (
         <div className="space-y-3">
-          <Label className={error ? 'text-destructive' : ''}>{label}</Label>
+          <Label className={error ? 'text-destructive' : 'text-sm font-medium text-foreground'}>
+            {label.includes('*') ? (
+              <>
+                {label.split('*')[0]} <span className="text-destructive">*</span>
+                {label.split('*')[1] && (
+                  <span className="block text-xs font-normal text-muted-foreground mt-1">
+                    {label.split('*')[1]}
+                  </span>
+                )}
+              </>
+            ) : (
+              label
+            )}
+          </Label>
           <RadioGroup
             onValueChange={field.onChange}
             value={field.value ?? ''}

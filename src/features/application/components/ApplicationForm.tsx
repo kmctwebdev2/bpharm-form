@@ -74,27 +74,42 @@ export function ApplicationForm() {
   if (submitSuccess && applicationNumber) {
     return (
       <FormContainer>
-        <div className="bg-card shadow-sm border rounded-xl p-8 max-w-md mx-auto text-center space-y-6">
+        <div className="bg-card shadow-lg border-0 rounded-2xl p-8 max-w-lg mx-auto text-center space-y-8">
           <div className="flex justify-center">
-            <CheckCircle2 className="w-16 h-16 text-green-500" />
+            <div className="rounded-full bg-green-50 p-3">
+              <CheckCircle2 className="w-16 h-16 text-green-500" strokeWidth={2.5} />
+            </div>
           </div>
-          <div className="space-y-2">
-            <h2 className="text-2xl font-bold tracking-tight">
+          <div className="space-y-3">
+            <h2 className="text-2xl font-bold tracking-tight text-primary leading-tight">
               Application Submitted Successfully
             </h2>
             <p className="text-muted-foreground">
               Your application has been received and is being processed.
             </p>
           </div>
-          <div className="bg-muted p-4 rounded-lg">
-            <p className="text-sm font-medium text-muted-foreground mb-1">Application Number</p>
-            <p className="text-xl font-bold">{applicationNumber}</p>
+          <div className="bg-[#EEF2F6] p-5 rounded-xl border border-[#EEF2F6]/50">
+            <p className="text-sm font-medium text-muted-foreground mb-2">Application Number</p>
+            <p className="text-2xl font-bold text-primary">{applicationNumber}</p>
           </div>
-          <a href={ROUTES.API.DOWNLOAD_PDF(applicationNumber)} download className="w-full">
-            <Button type="button" className="w-full">
-              <Download className="mr-2 h-4 w-4" /> Download Application PDF
+          <div className="flex flex-col gap-3 pt-2">
+            <a href={ROUTES.API.DOWNLOAD_PDF(applicationNumber)} download className="w-full">
+              <Button
+                type="button"
+                className="w-full py-6 text-base bg-primary text-primary-foreground hover:bg-primary/90 rounded-xl"
+              >
+                <Download className="mr-2 h-5 w-5" /> Download Application PDF
+              </Button>
+            </a>
+            <Button
+              type="button"
+              variant="outline"
+              className="w-full py-6 text-base border-primary/20 text-primary hover:bg-primary/5 rounded-xl"
+              onClick={() => window.location.reload()}
+            >
+              Submit Another Application
             </Button>
-          </a>
+          </div>
         </div>
       </FormContainer>
     );
@@ -102,43 +117,60 @@ export function ApplicationForm() {
 
   return (
     <FormContainer>
-      <div className="bg-card shadow-sm border rounded-xl p-6 md:p-8 mb-8">
-        <h1 className="text-3xl font-bold tracking-tight mb-2">
-          Application for B.Pharm 2026-2027
-        </h1>
-        <p className="text-muted-foreground mb-8">
-          Please fill out all the required information below.
-        </p>
-
-        <form onSubmit={handleSubmit(onSubmit)} className="space-y-12">
-          <div className="space-y-4">
-            <h2 className="text-xl font-semibold border-b pb-2">Personal Details</h2>
-            <PersonalDetailsStep />
+      <div className="bg-card shadow-lg border-0 rounded-2xl p-6 md:p-8 mb-8">
+        <form onSubmit={handleSubmit(onSubmit)} className="space-y-10">
+          <div className="space-y-6">
+            <h2 className="text-lg font-bold bg-muted text-primary px-4 py-3 rounded-md">
+              Personal Details
+            </h2>
+            <div className="px-1">
+              <PersonalDetailsStep />
+            </div>
           </div>
 
-          <div className="space-y-4">
-            <h2 className="text-xl font-semibold border-b pb-2">Upload Section</h2>
-            <UploadsStep />
+          <div className="space-y-6">
+            <h2 className="text-lg font-bold bg-muted text-primary px-4 py-3 rounded-md">
+              Upload Section
+            </h2>
+            <div className="px-1">
+              <UploadsStep />
+            </div>
           </div>
 
-          <div className="space-y-4">
-            <h2 className="text-xl font-semibold border-b pb-2">Details of Qualification</h2>
-            <QualificationStep />
+          <div className="space-y-6">
+            <h2 className="text-lg font-bold bg-muted text-primary px-4 py-3 rounded-md">
+              Details of Qualification
+            </h2>
+            <div className="px-1">
+              <QualificationStep />
+            </div>
           </div>
 
-          <div className="space-y-4">
-            <h2 className="text-xl font-semibold border-b pb-2">Marks Obtained (Optional)</h2>
-            <MarksStep />
+          <div className="space-y-6">
+            <h2 className="text-lg font-bold bg-muted text-primary px-4 py-3 rounded-md">
+              Marks Obtained (Optional)
+            </h2>
+            <div className="px-1">
+              <MarksStep />
+            </div>
           </div>
 
-          <div className="space-y-4">
-            <h2 className="text-xl font-semibold border-b pb-2">Bank Details (Optional)</h2>
-            <BankDetailsStep />
+          <div className="space-y-6">
+            <h2 className="text-lg font-bold bg-muted text-primary px-4 py-3 rounded-md">
+              Bank Details (Optional)
+            </h2>
+            <div className="px-1">
+              <BankDetailsStep />
+            </div>
           </div>
 
-          <div className="space-y-4">
-            <h2 className="text-xl font-semibold border-b pb-2">Declaration</h2>
-            <DeclarationStep />
+          <div className="space-y-6">
+            <h2 className="text-lg font-bold bg-muted text-primary px-4 py-3 rounded-md">
+              Declaration
+            </h2>
+            <div className="px-1">
+              <DeclarationStep />
+            </div>
           </div>
 
           <div className="pt-6 border-t flex justify-end">

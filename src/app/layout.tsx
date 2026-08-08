@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
 import { Toaster } from '@/components/ui/sonner';
+import { Header } from '@/components/layout/Header';
 import './globals.css';
 
 const inter = Inter({
@@ -9,8 +10,8 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: 'Admission Management Portal',
-  description: 'Manage your admission application smoothly and securely.',
+  title: 'KMCT Admission Management',
+  description: 'KMCT College of Pharmacy Application for Admission.',
 };
 
 export default function RootLayout({
@@ -20,8 +21,11 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className={`${inter.variable} min-h-screen bg-background font-sans antialiased`}>
+      <body
+        className={`${inter.variable} min-h-screen bg-background font-sans antialiased text-[#2B355A]`}
+      >
         <div className="relative flex min-h-screen flex-col">
+          <Header />
           <main className="flex-1">{children}</main>
         </div>
         <Toaster position="top-center" richColors />
