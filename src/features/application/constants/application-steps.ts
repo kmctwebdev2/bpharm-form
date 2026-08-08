@@ -4,7 +4,6 @@ import { MarksStep } from '../components/steps/MarksStep';
 import { UploadsStep } from '../components/steps/UploadsStep';
 import { BankDetailsStep } from '../components/steps/BankDetailsStep';
 import { DeclarationStep } from '../components/steps/DeclarationStep';
-import { ReviewStep } from '../components/steps/ReviewStep';
 
 export interface StepConfig {
   id: string;
@@ -59,12 +58,5 @@ export const APPLICATION_STEPS: StepConfig[] = [
     description: 'Final confirmation and submission',
     component: DeclarationStep,
     validationFields: ['declaration'],
-  },
-  {
-    id: 'review',
-    title: 'Review & Preview',
-    description: 'Verify all entered data before submission',
-    component: ReviewStep,
-    validationFields: [],
   },
 ];
