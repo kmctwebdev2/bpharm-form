@@ -37,7 +37,7 @@ export function UploadsStep() {
             name="uploads.sslcCertificate"
             label="SSLC Certificate *"
             accept={pdfAccept}
-            maxSizeLabel="5MB"
+            maxSizeLabel="2MB"
           />
           <ControlledFileUpload
             name="uploads.aadhaar"

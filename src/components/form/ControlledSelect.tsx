@@ -50,9 +50,7 @@ export function ControlledSelect({ name, label, options, placeholder }: Controll
           <Select
             onValueChange={field.onChange}
             value={
-              field.value !== undefined && field.value !== ''
-                ? String(field.value)
-                : '__unselected__'
+              field.value !== undefined && field.value !== '' ? String(field.value) : 'Not Selected'
             }
           >
             <SelectTrigger

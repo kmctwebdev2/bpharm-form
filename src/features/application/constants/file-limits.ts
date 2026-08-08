@@ -1,6 +1,6 @@
 export const FILE_LIMITS = {
   IMAGE_MAX_SIZE: 1 * 1024 * 1024, // 1 MB
-  SSLC_MAX_SIZE: 5 * 1024 * 1024, // 5 MB
+  SSLC_MAX_SIZE: 2 * 1024 * 1024, // 2 MB
   AADHAAR_MAX_SIZE: 2 * 1024 * 1024, // 2 MB
 };
 
