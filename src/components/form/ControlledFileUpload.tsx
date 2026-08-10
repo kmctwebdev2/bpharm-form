@@ -111,7 +111,7 @@ export function ControlledFileUpload({
         const handleRemove = async () => {
           if (!fileData) {
             // Not uploaded yet, just clear (shouldn't be possible but defensive check)
-            onChange(undefined);
+            onChange(null);
             return;
           }
 
@@ -133,7 +133,7 @@ export function ControlledFileUpload({
               throw new Error(json.message || 'Deletion failed');
             }
 
-            onChange(undefined);
+            onChange(null);
             if (inputRef.current) {
               inputRef.current.value = '';
             }

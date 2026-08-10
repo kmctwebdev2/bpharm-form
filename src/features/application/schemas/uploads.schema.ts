@@ -12,7 +12,7 @@ export const uploadedFileSchema = (isOptional: boolean = false, requiredMessage?
     { message: requiredMessage },
   );
 
-  return isOptional ? schema.optional() : schema;
+  return isOptional ? schema.nullish() : schema;
 };
 
 export const uploadsSchema = z.object({

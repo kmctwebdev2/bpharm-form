@@ -86,7 +86,7 @@ export function ApplicationForm() {
 
       if (data.uploads) {
         Object.values(data.uploads).forEach(
-          (file: { publicId?: string; resourceType?: string } | undefined) => {
+          (file: { publicId?: string; resourceType?: string } | null | undefined) => {
             if (file && file.publicId) {
               filesToDelete.push({
                 publicId: file.publicId,
