@@ -5,14 +5,6 @@ import { Application } from '@/models/Application';
 import { Counter } from '@/models/Counter';
 import { cloudinary } from '@/lib/cloudinary';
 
-export interface ApplicationFilesPayload {
-  photo: File;
-  signature: File;
-  sslcCertificate: File;
-  aadhaar?: File;
-  certificate?: File; // Qualification certificate
-}
-
 export class ApplicationService {
   static async generateApplicationNumber(): Promise<{
     applicationNumber: string;
@@ -58,13 +50,10 @@ export class ApplicationService {
   /**
    * Uploads a single file to Cloudinary.
    */
-  private static async uploadToCloudinary(
-    file: File,
+  static async uploadToCloudinary(
+    buffer: Buffer,
     folder: string,
-  ): Promise<{ url: string; public_id: string }> {
-    const arrayBuffer = await file.arrayBuffer();
-    const buffer = Buffer.from(arrayBuffer);
-
+  ): Promise<{ url: string; public_id: string; resource_type: string }> {
     return new Promise((resolve, reject) => {
       const uploadStream = cloudinary.uploader.upload_stream(
         {
@@ -76,7 +65,11 @@ export class ApplicationService {
           if (error || !result) {
             reject(error || new Error('Upload failed'));
           } else {
-            resolve({ url: result.secure_url, public_id: result.public_id });
+            resolve({
+              url: result.secure_url,
+              public_id: result.public_id,
+              resource_type: result.resource_type,
+            });
           }
         },
       );
@@ -85,115 +78,32 @@ export class ApplicationService {
   }
 
   /**
-   * Uploads all files to Cloudinary sequentially as per requirements.
-   * If any fails, it rejects immediately.
-   */
-  static async uploadApplicationFiles(files: ApplicationFilesPayload) {
-    const uploadedAssets: { url: string; public_id: string }[] = [];
-
-    try {
-      // 1. Photo
-      const photoResult = await this.uploadToCloudinary(files.photo, 'admissions/photos');
-      uploadedAssets.push(photoResult);
-
-      // 2. Signature
-      const signatureResult = await this.uploadToCloudinary(
-        files.signature,
-        'admissions/signatures',
-      );
-      uploadedAssets.push(signatureResult);
-
-      const sslcResult = await this.uploadToCloudinary(
-        files.sslcCertificate,
-        'admissions/documents',
-      );
-      uploadedAssets.push(sslcResult);
-
-      let aadhaarResult;
-      if (files.aadhaar) {
-        aadhaarResult = await this.uploadToCloudinary(files.aadhaar, 'admissions/documents');
-        uploadedAssets.push(aadhaarResult);
-      }
-
-      let certResult;
-      if (files.certificate) {
-        certResult = await this.uploadToCloudinary(files.certificate, 'admissions/documents');
-        uploadedAssets.push(certResult);
-      }
-
-      return {
-        assets: uploadedAssets, // For rollback purposes
-        urls: {
-          photo: photoResult.url,
-          signature: signatureResult.url,
-          sslcCertificate: sslcResult.url,
-          aadhaar: aadhaarResult?.url,
-          certificate: certResult?.url,
-        },
-      };
-    } catch (error) {
-      // If upload fails, rollback any successfully uploaded files in this batch
-      await this.rollbackCloudinaryFiles(uploadedAssets.map((a) => a.public_id));
-      throw new Error(`File upload failed: ${(error as Error).message}`);
-    }
-  }
-
-  /**
-   * Rolls back Cloudinary files using their public_ids.
-   */
-  static async rollbackCloudinaryFiles(publicIds: string[]) {
-    for (const publicId of publicIds) {
-      try {
-        await cloudinary.uploader.destroy(publicId);
-      } catch (err) {
-        console.error(`Failed to rollback Cloudinary file: ${publicId}`, err);
-      }
-    }
-  }
-
-  /**
-   * Orchestrates the complete submission flow: Upload -> Generate Number -> Save to DB.
+   * Orchestrates the complete submission flow: Generate Number -> Save to DB.
+   * Files are now uploaded directly from the frontend to Cloudinary prior to submission.
    */
   static async createApplication(
     applicationData: Omit<
       IApplication,
-      'applicationNumber' | 'sequence' | 'uploads' | 'createdAt' | 'updatedAt'
+      'applicationNumber' | 'sequence' | 'createdAt' | 'updatedAt'
     >,
-    files: ApplicationFilesPayload,
   ): Promise<{ applicationNumber: string }> {
     await connectDB();
 
-    // 1. Upload Files
-    const uploadResult = await this.uploadApplicationFiles(files);
-
     try {
-      // 2. Generate Application Number
+      // 1. Generate Application Number
       const { applicationNumber, sequence } = await this.generateApplicationNumber();
 
-      // 3. Save to MongoDB
+      // 2. Save to MongoDB
       const docToSave = {
         ...applicationData,
         applicationNumber,
         sequence,
-        uploads: {
-          photo: uploadResult.urls.photo,
-          signature: uploadResult.urls.signature,
-          sslcCertificate: uploadResult.urls.sslcCertificate,
-          aadhaar: uploadResult.urls.aadhaar,
-        },
       };
-
-      // Add qualification certificate if present
-      if (uploadResult.urls.certificate) {
-        docToSave.qualification.certificate = uploadResult.urls.certificate;
-      }
 
       await Application.create(docToSave);
 
       return { applicationNumber };
     } catch (error) {
-      // 4. Rollback completely on DB/Counter failure
-      await this.rollbackCloudinaryFiles(uploadResult.assets.map((a) => a.public_id));
       throw new Error(`Failed to save application: ${(error as Error).message}`);
     }
   }

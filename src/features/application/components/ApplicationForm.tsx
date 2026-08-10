@@ -25,26 +25,12 @@ export function ApplicationForm() {
     setIsSubmitting(true);
     try {
       const data = getValues();
-      const formData = new FormData();
-
-      const { certificate, ...qualificationData } = data.qualification || {};
-
-      formData.append('personalDetails', JSON.stringify(data.personalDetails));
-      formData.append('qualification', JSON.stringify(qualificationData));
-      formData.append('marks', JSON.stringify(data.marks));
-      formData.append('bankDetails', JSON.stringify(data.bankDetails));
-      formData.append('declaration', JSON.stringify(data.declaration));
-
-      if (data.uploads?.photo) formData.append('photo', data.uploads.photo);
-      if (data.uploads?.signature) formData.append('signature', data.uploads.signature);
-      if (data.uploads?.sslcCertificate)
-        formData.append('sslcCertificate', data.uploads.sslcCertificate);
-      if (data.uploads?.aadhaar) formData.append('aadhaar', data.uploads.aadhaar);
-      if (certificate) formData.append('certificate', certificate);
-
       const response = await fetch('/api/applications/submit', {
         method: 'POST',
-        body: formData,
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data),
       });
 
       const result = await response.json();

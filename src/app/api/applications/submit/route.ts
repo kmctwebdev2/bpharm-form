@@ -1,44 +1,13 @@
 import { apiResponse } from '@/lib/api-response';
 import { ApplicationService } from '@/services/application.service';
 import { applicationSchema } from '@/features/application/schemas/application.schema';
+import { IApplication } from '@/types/application';
 
 export async function POST(request: Request) {
   try {
-    const formData = await request.formData();
+    const payload = await request.json();
 
-    // 1. Extract JSON chunks
-    const personalDetails = JSON.parse((formData.get('personalDetails') as string) || '{}');
-    const qualificationData = JSON.parse((formData.get('qualification') as string) || '{}');
-    const marks = JSON.parse((formData.get('marks') as string) || '[]');
-    const bankDetails = JSON.parse((formData.get('bankDetails') as string) || '{}');
-    const declaration = JSON.parse((formData.get('declaration') as string) || '{}');
-
-    // 2. Extract Files
-    const photo = formData.get('photo');
-    const signature = formData.get('signature');
-    const sslcCertificate = formData.get('sslcCertificate');
-    const aadhaar = formData.get('aadhaar');
-    const certificate = formData.get('certificate'); // optional
-
-    // 3. Build Payload
-    const payload = {
-      personalDetails,
-      qualification: {
-        ...qualificationData,
-        certificate: certificate ? certificate : undefined,
-      },
-      marks,
-      bankDetails,
-      declaration,
-      uploads: {
-        photo,
-        signature,
-        sslcCertificate,
-        aadhaar,
-      },
-    };
-
-    // 4. Validate full payload using Zod (including files!)
+    // 1. Validate full payload using Zod
     const validationResult = applicationSchema.safeParse(payload);
     if (!validationResult.success) {
       return apiResponse.validationError(validationResult.error.format());
@@ -46,22 +15,30 @@ export async function POST(request: Request) {
 
     const applicationData = validationResult.data;
 
-    // 5. Call Service to handle Upload, Number Generation, and DB Save
-    const result = await ApplicationService.createApplication(
-      applicationData as unknown as Omit<
-        import('@/types/application').IApplication,
-        'applicationNumber' | 'sequence' | 'uploads' | 'createdAt' | 'updatedAt'
-      >,
-      {
-        photo: photo as File,
-        signature: signature as File,
-        sslcCertificate: sslcCertificate as File,
-        aadhaar: aadhaar ? (aadhaar as File) : undefined,
-        certificate: certificate ? (certificate as File) : undefined,
+    // We extract the url for MongoDB
+    const docToSave = {
+      personalDetails: applicationData.personalDetails,
+      qualification: {
+        ...applicationData.qualification,
+        certificate: applicationData.qualification.certificate?.url || undefined,
       },
+      marks: applicationData.marks || [],
+      bankDetails: applicationData.bankDetails,
+      declaration: applicationData.declaration,
+      uploads: {
+        photo: applicationData.uploads.photo?.url,
+        signature: applicationData.uploads.signature?.url,
+        sslcCertificate: applicationData.uploads.sslcCertificate?.url,
+        aadhaar: applicationData.uploads.aadhaar?.url || undefined,
+      },
+    };
+
+    // 2. Call Service to handle Number Generation and DB Save
+    const result = await ApplicationService.createApplication(
+      docToSave as Omit<IApplication, 'applicationNumber' | 'sequence' | 'createdAt' | 'updatedAt'>,
     );
 
-    // 6. Return Success Response
+    // 3. Return Success Response
     return apiResponse.success(
       { applicationNumber: result.applicationNumber },
       'Application submitted successfully.',
