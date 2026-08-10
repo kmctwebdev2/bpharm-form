@@ -19,10 +19,17 @@ export function DeclarationStep() {
 
   useEffect(() => {
     let objectUrl: string | null = null;
-    if (signatureFile && signatureFile instanceof File) {
-      objectUrl = URL.createObjectURL(signatureFile);
-      // eslint-disable-next-line react-hooks/set-state-in-effect
-      setSignaturePreview(objectUrl);
+
+    if (signatureFile) {
+      if (signatureFile instanceof File) {
+        objectUrl = URL.createObjectURL(signatureFile);
+        // eslint-disable-next-line react-hooks/set-state-in-effect
+        setSignaturePreview(objectUrl);
+      } else if (typeof signatureFile === 'object' && signatureFile.url) {
+        setSignaturePreview(signatureFile.url);
+      } else {
+        setSignaturePreview(null);
+      }
     } else {
       setSignaturePreview(null);
     }

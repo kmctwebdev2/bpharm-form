@@ -2,7 +2,7 @@
 
 import React from 'react';
 import { ControlledFileUpload } from '@/components/form/ControlledFileUpload';
-import { ACCEPTED_FILE_TYPES } from '../../constants/file-limits';
+import { ACCEPTED_FILE_TYPES, FILE_LIMITS } from '../../constants/file-limits';
 
 export function UploadsStep() {
   const imageAccept = ACCEPTED_FILE_TYPES.IMAGE.join(',');
@@ -19,12 +19,14 @@ export function UploadsStep() {
             label="Candidate Photo *"
             accept={imageAccept}
             maxSizeLabel="1MB"
+            maxSize={FILE_LIMITS.IMAGE_MAX_SIZE}
           />
           <ControlledFileUpload
             name="uploads.signature"
             label="Candidate Signature *"
             accept={imageAccept}
             maxSizeLabel="1MB"
+            maxSize={FILE_LIMITS.IMAGE_MAX_SIZE}
           />
         </div>
       </div>
@@ -38,12 +40,14 @@ export function UploadsStep() {
             label="SSLC Certificate *"
             accept={pdfAccept}
             maxSizeLabel="2MB"
+            maxSize={FILE_LIMITS.SSLC_MAX_SIZE}
           />
           <ControlledFileUpload
             name="uploads.aadhaar"
             label="Aadhaar Card (Optional)"
             accept={pdfAccept}
             maxSizeLabel="2MB"
+            maxSize={FILE_LIMITS.AADHAAR_MAX_SIZE}
           />
         </div>
       </div>

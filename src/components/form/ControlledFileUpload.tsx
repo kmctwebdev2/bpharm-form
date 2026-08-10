@@ -11,6 +11,7 @@ interface ControlledFileUploadProps {
   label: string;
   accept: string;
   maxSizeLabel: string;
+  maxSize: number;
 }
 
 export function ControlledFileUpload({
@@ -18,6 +19,7 @@ export function ControlledFileUpload({
   label,
   accept,
   maxSizeLabel,
+  maxSize,
 }: ControlledFileUploadProps) {
   const { control } = useFormContext();
   const inputRef = useRef<HTMLInputElement>(null);
@@ -44,6 +46,33 @@ export function ControlledFileUpload({
         const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
           const selectedFile = e.target.files?.[0];
           if (!selectedFile) return;
+
+          // 1. File Type Validation
+          const fileTypeValid = accept.split(',').some((type) => {
+            const t = type.trim();
+            if (t.endsWith('/*')) {
+              return selectedFile.type.startsWith(t.replace('/*', ''));
+            }
+            return selectedFile.type === t;
+          });
+
+          if (!fileTypeValid) {
+            toast.error(
+              `Invalid file type. Accepted: ${accept
+                .replace(/image\//g, '')
+                .replace(/application\//g, '')
+                .toUpperCase()}`,
+            );
+            if (inputRef.current) inputRef.current.value = '';
+            return;
+          }
+
+          // 2. File Size Validation
+          if (selectedFile.size > maxSize) {
+            toast.error(`${label.replace('*', '').trim()} must be less than ${maxSizeLabel}`);
+            if (inputRef.current) inputRef.current.value = '';
+            return;
+          }
 
           setIsUploading(true);
           appContext?.incrementUploads();

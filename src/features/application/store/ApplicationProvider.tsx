@@ -22,8 +22,18 @@ export function ApplicationProvider({ children }: ApplicationProviderProps) {
     mode: 'onChange',
     defaultValues: {
       marks: DEFAULT_MARKS,
+      qualification: {
+        certificate: undefined,
+      },
       declaration: {
         date: new Date(),
+        accepted: undefined,
+      },
+      uploads: {
+        photo: undefined,
+        signature: undefined,
+        sslcCertificate: undefined,
+        aadhaar: undefined,
       },
     },
   });

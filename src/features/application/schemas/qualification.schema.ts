@@ -31,7 +31,7 @@ export const qualificationSchema = z.object({
     .min(3, 'Month is required')
     .max(20, 'Month cannot exceed 20 characters')
     .transform(sanitizeString),
-  certificate: uploadedFileSchema(),
+  certificate: uploadedFileSchema(false, 'Certificate of Qualifying Examination is required'),
 });
 
 export type QualificationInput = z.infer<typeof qualificationSchema>;

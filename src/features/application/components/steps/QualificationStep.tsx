@@ -4,7 +4,7 @@ import React, { useMemo } from 'react';
 import { ControlledInput } from '@/components/form/ControlledInput';
 import { ControlledSelect } from '@/components/form/ControlledSelect';
 import { ControlledFileUpload } from '@/components/form/ControlledFileUpload';
-import { ACCEPTED_FILE_TYPES } from '../../constants/file-limits';
+import { ACCEPTED_FILE_TYPES, FILE_LIMITS } from '../../constants/file-limits';
 
 export function QualificationStep() {
   const currentYear = new Date().getFullYear();
@@ -86,6 +86,7 @@ export function QualificationStep() {
             label="Upload Certificate of Qualifying Examination (Plus Two) *"
             accept={pdfAccept}
             maxSizeLabel="2MB"
+            maxSize={FILE_LIMITS.PLUS_TWO_MAX_SIZE}
           />
         </div>
       </div>
