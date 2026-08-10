@@ -338,9 +338,13 @@ export class PdfService {
     doc.setFont('helvetica', 'normal');
     doc.setTextColor(0, 0, 0);
     // In PDF, we might want to just show the text or use the text from the UI, but we'll stick to a generic one or the one they just updated.
-    const declarationText = `I do hereby declare that the particulars given in the application are true to the best of my knowledge and belief.`;
-    doc.text(declarationText, 14, currentY);
-    currentY += 8;
+    const declarationText = `I do hereby declare that the particulars given in the application are true to the best of my knowledge and belief. If any of the particulars given by me in this application is proved fraudulent at any later stage of admission, I shall be liable for disciplinary action and my admission shall become null and void. I shall produce the originals of the certificates at the time of interview. I have carefully read the prospectus thoroughly and I am ready to abide by the terms and conditions mentioned in it.`;
+
+    const splitText = doc.splitTextToSize(declarationText, 182);
+    doc.text(splitText, 14, currentY);
+
+    // Adjust Y based on the number of wrapped lines + some extra margin
+    currentY += splitText.length * 5 + 12;
 
     const dec = application.declaration;
     doc.text(`Place: ${dec.place}`, 14, currentY);
@@ -350,9 +354,9 @@ export class PdfService {
     if (application.uploads?.signature) {
       const signatureDataUrl = await fetchImageAsBase64(application.uploads.signature);
       if (signatureDataUrl) {
-        doc.addImage(signatureDataUrl, 140, currentY - 10, 40, 20);
+        doc.addImage(signatureDataUrl, 140, currentY - 12, 40, 20);
         doc.setFont('helvetica', 'bold');
-        doc.text('Applicant Signature', 140, currentY + 14);
+        doc.text('Applicant Signature', 140, currentY + 12);
       }
     }
 
