@@ -20,9 +20,8 @@ const recoverySchema = z.object({
     .min(1, 'Application Number is required')
     .regex(/^Pharm D - \d+$/, 'Format must be: Pharm D - XXXX'),
   email: z.string().trim().email('Invalid email address'),
-  dateOfBirth: z.coerce.date({
-    required_error: 'Date of Birth is required',
-    invalid_type_error: 'Invalid Date of Birth',
+  dateOfBirth: z.date({
+    message: 'Date of Birth is required',
   }),
 });
 
@@ -141,25 +140,19 @@ export default function DownloadApplicationPage() {
               <FormProvider {...form}>
                 <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
                   <ControlledInput
-                    control={form.control}
                     name="applicationNumber"
                     label="Application Number"
                     placeholder="Pharm D - XXXX"
                   />
 
                   <ControlledInput
-                    control={form.control}
                     name="email"
                     label="Email Address"
                     type="email"
                     placeholder="applicant@example.com"
                   />
 
-                  <ControlledDatePicker
-                    control={form.control}
-                    name="dateOfBirth"
-                    label="Date of Birth"
-                  />
+                  <ControlledDatePicker name="dateOfBirth" label="Date of Birth" />
 
                   <Button
                     type="submit"
