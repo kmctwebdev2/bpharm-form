@@ -58,7 +58,7 @@ export function MarksRow({ index, subjectName }: MarksRowProps) {
         <ControlledNumberInput
           name={`marks.${index}.numberOfChances`}
           hideLabel
-          placeholder="1"
+          placeholder="Total Attempts"
           min={1}
         />
       </td>

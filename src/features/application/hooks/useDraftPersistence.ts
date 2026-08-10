@@ -54,6 +54,18 @@ export function useDraftPersistence(form: UseFormReturn<ApplicationInput>) {
       if (saved) {
         const draft: DraftData = JSON.parse(saved);
         if (draft.version === FORM_VERSION && draft.data) {
+          // Inject default numberOfChances: 1 into older drafts
+          if (draft.data.marks && Array.isArray(draft.data.marks)) {
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            draft.data.marks = draft.data.marks.map((markRow: any) => ({
+              ...markRow,
+              numberOfChances:
+                markRow.numberOfChances !== undefined && markRow.numberOfChances !== null
+                  ? markRow.numberOfChances
+                  : 1,
+            }));
+          }
+
           form.reset(draft.data as ApplicationInput);
         }
       }

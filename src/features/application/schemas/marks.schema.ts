@@ -18,9 +18,9 @@ export const markSchema = z
       data.numberOfChances !== undefined &&
       data.numberOfChances !== null;
 
-    const hasAnyValue = hasMax || hasSecured || hasChances;
+    const hasMarks = hasMax || hasSecured;
 
-    if (hasAnyValue) {
+    if (hasMarks) {
       const max = Number(data.maximumMarks);
       const secured = Number(data.marksSecured);
       const chances = Number(data.numberOfChances);
