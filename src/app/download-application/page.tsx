@@ -51,6 +51,13 @@ export default function DownloadApplicationPage() {
     setResult(null);
 
     try {
+      // Import format at the top of the file if needed, wait, we can just use simple string conversion or format if date-fns is imported.
+      // Wait, date-fns format is not imported. I'll just use format because I can import it.
+      // Let's use format from date-fns, wait, I need to make sure format is imported.
+      // Actually, I can use a quick local extraction to send YYYY-MM-DD safely in local time.
+      const dobDate = data.dateOfBirth;
+      const dobString = `${dobDate.getFullYear()}-${String(dobDate.getMonth() + 1).padStart(2, '0')}-${String(dobDate.getDate()).padStart(2, '0')}`;
+
       const response = await fetch('/api/applications/recover', {
         method: 'POST',
         headers: {
@@ -59,7 +66,7 @@ export default function DownloadApplicationPage() {
         body: JSON.stringify({
           applicationNumber: data.applicationNumber,
           email: data.email,
-          dateOfBirth: data.dateOfBirth.toISOString(),
+          dateOfBirth: dobString, // Send as calendar string
         }),
       });
 

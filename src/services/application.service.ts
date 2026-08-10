@@ -123,30 +123,29 @@ export class ApplicationService {
   static async verifyAndRecoverApplication(
     applicationNumber: string,
     email: string,
-    dateOfBirth: string,
+    dateOfBirthString: string,
   ): Promise<{ applicationNumber: string; applicantName: string } | null> {
     await connectDB();
 
     const normalizedEmail = email.trim().toLowerCase();
-    const dob = new Date(dateOfBirth);
 
-    // Create a start and end boundary for the day to avoid timezone matching issues
-    const startOfDay = new Date(dob);
-    startOfDay.setUTCHours(0, 0, 0, 0);
-
-    const endOfDay = new Date(dob);
-    endOfDay.setUTCHours(23, 59, 59, 999);
-
+    // Query only by application number and email.
+    // DOB validation is done in JS to avoid timezone boundary issues.
     const application = await Application.findOne({
       applicationNumber: applicationNumber.trim(),
       'personalDetails.email': normalizedEmail,
-      'personalDetails.dateOfBirth': {
-        $gte: startOfDay,
-        $lte: endOfDay,
-      },
     }).lean();
 
     if (!application) {
+      return null;
+    }
+
+    // Safely normalize the MongoDB Date object to a YYYY-MM-DD calendar string
+    // using the application's intended timezone context.
+    const { normalizeDobForComparison } = await import('@/utils');
+    const storedDobString = normalizeDobForComparison(application.personalDetails.dateOfBirth);
+
+    if (storedDobString !== dateOfBirthString.trim()) {
       return null;
     }
 

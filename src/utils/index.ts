@@ -20,6 +20,21 @@ export function formatDate(date: Date | string, formatString = 'dd/MM/yyyy'): st
 }
 
 /**
+ * Normalize a Date or timestamp string strictly into a calendar date "YYYY-MM-DD"
+ * using the application's intended timezone (Asia/Kolkata).
+ * This ensures DOB comparisons are safe from UTC timezone offsets.
+ */
+export function normalizeDobForComparison(dob: Date | string): string {
+  if (!dob) return '';
+  const dateObj = typeof dob === 'string' ? new Date(dob) : dob;
+  if (!isValid(dateObj)) return '';
+
+  // Format to YYYY-MM-DD using the India timezone to match where the college resides.
+  // en-CA is a handy locale because its default format is YYYY-MM-DD.
+  return dateObj.toLocaleDateString('en-CA', { timeZone: 'Asia/Kolkata' });
+}
+
+/**
  * Calculate age from a birth date
  * @param birthDate The date of birth
  * @returns The calculated age in years
