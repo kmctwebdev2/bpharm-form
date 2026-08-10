@@ -36,11 +36,39 @@ export async function POST(request: Request) {
 export async function DELETE(request: Request) {
   try {
     const body = await request.json();
-    const { publicId, resourceType } = body;
+    const { publicId, resourceType, files } = body;
 
+    // Handle batch deletion
+    if (files && Array.isArray(files)) {
+      const deletionPromises = files.map((file) => {
+        if (!file.publicId) return Promise.resolve();
+        return cloudinary.uploader.destroy(file.publicId, {
+          resource_type: file.resourceType || 'auto',
+        });
+      });
+
+      const results = await Promise.allSettled(deletionPromises);
+      const failed = results.filter((r) => r.status === 'rejected');
+
+      if (failed.length > 0) {
+        console.error('Some files failed to delete during batch cleanup:', failed);
+        return NextResponse.json(
+          {
+            success: false,
+            message: 'Some files could not be deleted',
+            failedCount: failed.length,
+          },
+          { status: 207 }, // Multi-Status
+        );
+      }
+
+      return NextResponse.json({ success: true, message: 'Files deleted successfully' });
+    }
+
+    // Handle single deletion
     if (!publicId) {
       return NextResponse.json(
-        { success: false, message: 'No publicId provided' },
+        { success: false, message: 'No publicId or files provided' },
         { status: 400 },
       );
     }

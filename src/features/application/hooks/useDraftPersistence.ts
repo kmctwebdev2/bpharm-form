@@ -11,14 +11,21 @@ interface DraftData {
 
 export function useDraftPersistence(form: UseFormReturn<ApplicationInput>) {
   const isRestored = useRef(false);
+  const pauseSaving = useRef(false);
+  const timeoutRef = useRef<NodeJS.Timeout | null>(null);
 
   // Debounced save
   useEffect(() => {
     const subscription = form.watch((value) => {
+      if (pauseSaving.current) return;
       // Don't save if we haven't restored the initial load yet
       if (!isRestored.current) return;
 
-      const handler = setTimeout(() => {
+      if (timeoutRef.current) {
+        clearTimeout(timeoutRef.current);
+      }
+
+      timeoutRef.current = setTimeout(() => {
         try {
           const draft: DraftData = {
             version: FORM_VERSION,
@@ -30,11 +37,14 @@ export function useDraftPersistence(form: UseFormReturn<ApplicationInput>) {
           console.error('Failed to save draft:', error);
         }
       }, 1000); // 1s debounce
-
-      return () => clearTimeout(handler);
     });
 
-    return () => subscription.unsubscribe();
+    return () => {
+      subscription.unsubscribe();
+      if (timeoutRef.current) {
+        clearTimeout(timeoutRef.current);
+      }
+    };
   }, [form]);
 
   // Restore draft
@@ -57,6 +67,11 @@ export function useDraftPersistence(form: UseFormReturn<ApplicationInput>) {
 
   // Clear draft
   const clearDraft = useCallback(() => {
+    pauseSaving.current = true;
+    if (timeoutRef.current) {
+      clearTimeout(timeoutRef.current);
+      timeoutRef.current = null;
+    }
     try {
       localStorage.removeItem(FORM_STORAGE_KEY);
     } catch (error) {
@@ -64,5 +79,9 @@ export function useDraftPersistence(form: UseFormReturn<ApplicationInput>) {
     }
   }, []);
 
-  return { restoreDraft, clearDraft };
+  const resumeSaving = useCallback(() => {
+    pauseSaving.current = false;
+  }, []);
+
+  return { restoreDraft, clearDraft, resumeSaving };
 }

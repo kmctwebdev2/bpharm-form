@@ -1,9 +1,10 @@
-import React, { useRef, useState } from 'react';
+import React, { useRef, useState, useContext } from 'react';
 import { Controller, useFormContext } from 'react-hook-form';
 import { Label } from '@/components/ui/label';
 import { Button } from '@/components/ui/button';
 import { UploadCloud, FileIcon, X, CheckCircle, Loader2 } from 'lucide-react';
 import { toast } from 'sonner';
+import { ApplicationFormContext } from '@/features/application/hooks/useApplicationForm';
 
 interface ControlledFileUploadProps {
   name: string;
@@ -22,6 +23,7 @@ export function ControlledFileUpload({
   const inputRef = useRef<HTMLInputElement>(null);
   const [isUploading, setIsUploading] = useState(false);
   const [isRemoving, setIsRemoving] = useState(false);
+  const appContext = useContext(ApplicationFormContext);
 
   return (
     <Controller
@@ -44,6 +46,7 @@ export function ControlledFileUpload({
           if (!selectedFile) return;
 
           setIsUploading(true);
+          appContext?.incrementUploads();
 
           try {
             const formData = new FormData();
@@ -69,6 +72,7 @@ export function ControlledFileUpload({
             toast.error('Unable to upload the file. Please try again.');
           } finally {
             setIsUploading(false);
+            appContext?.decrementUploads();
             if (inputRef.current) {
               inputRef.current.value = '';
             }

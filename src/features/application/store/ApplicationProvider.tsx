@@ -23,12 +23,16 @@ export function ApplicationProvider({ children }: ApplicationProviderProps) {
     defaultValues: {
       marks: DEFAULT_MARKS,
       declaration: {
-        date: new Date().toISOString(),
+        date: new Date(),
       },
     },
   });
 
-  const { restoreDraft } = useDraftPersistence(form);
+  const { restoreDraft, clearDraft, resumeSaving } = useDraftPersistence(form);
+  const [pendingUploads, setPendingUploads] = useState(0);
+
+  const incrementUploads = () => setPendingUploads((prev) => prev + 1);
+  const decrementUploads = () => setPendingUploads((prev) => Math.max(0, prev - 1));
 
   useEffect(() => {
     // eslint-disable-next-line react-hooks/set-state-in-effect
@@ -39,9 +43,18 @@ export function ApplicationProvider({ children }: ApplicationProviderProps) {
   // Prevent hydration mismatch by returning null until client-side mounts
   if (!isClient) return null;
 
+  const contextValue = {
+    form,
+    clearDraft,
+    resumeSaving,
+    pendingUploads,
+    incrementUploads,
+    decrementUploads,
+  };
+
   return (
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    <ApplicationFormContext.Provider value={form as any}>
+    <ApplicationFormContext.Provider value={contextValue as any}>
       {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
       <RHFProvider {...(form as any)}>{children}</RHFProvider>
     </ApplicationFormContext.Provider>
