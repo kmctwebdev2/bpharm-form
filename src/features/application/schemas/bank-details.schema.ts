@@ -46,7 +46,7 @@ export const bankDetailsSchema = z
           path: ['accountNumber'],
         });
       }
-      if (!data.ifscCode?.trim() || !/^[A-Z]{4}0[A-Z0-9]{6}$/.test(data.ifscCode)) {
+      if (data.ifscCode?.trim() && !/^[A-Z]{4}0[A-Z0-9]{6}$/.test(data.ifscCode)) {
         ctx.addIssue({
           code: z.ZodIssueCode.custom,
           message: 'Invalid IFSC format (e.g., SBIN0001234)',
