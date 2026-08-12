@@ -72,7 +72,6 @@ export class PdfService {
     doc.setFontSize(10);
     doc.setFont('helvetica', 'normal');
     doc.setTextColor(100, 100, 100);
-    doc.text('Kalanthode, Kozhikode, Kerala - 673601', 14, 46);
 
     doc.setFontSize(14);
     doc.setFont('helvetica', 'bold');
@@ -80,7 +79,7 @@ export class PdfService {
     doc.text('Application for Admission', 14, 56);
 
     doc.setFontSize(12);
-    doc.text('(B.Pharm / Pharm D)', 14, 62);
+    doc.text('(Pharm D)', 14, 62);
 
     // Photo at Right of Header Text
     if (photoDataUrl) {

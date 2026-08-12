@@ -28,15 +28,6 @@ export default function Home() {
               Start Application
             </Button>
           </Link>
-
-          <div className="flex flex-col items-center gap-2">
-            <p className="text-sm text-muted-foreground">Already submitted an application?</p>
-            <Link href="/download-application">
-              <Button variant="outline" className="rounded-full px-6">
-                Download Application
-              </Button>
-            </Link>
-          </div>
         </div>
 
         {/* Minimal Requirements Info */}

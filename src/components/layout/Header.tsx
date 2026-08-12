@@ -1,4 +1,3 @@
-import React from 'react';
 import Image from 'next/image';
 import logo from '@/assets/images/logo.png';
 
@@ -20,7 +19,7 @@ export function Header() {
             KMCT College of Pharmacy
           </h1>
           <p className="text-xs sm:text-sm md:text-base text-primary-foreground/80 mt-1">
-            Application for Admission to M.Pharm / Pharm.D (P.B.) | 2026-27
+            Application for Admission to Pharm.D | 2026-27
           </p>
         </div>
       </div>

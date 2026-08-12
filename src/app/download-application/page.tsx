@@ -118,141 +118,148 @@ export default function DownloadApplicationPage() {
   };
 
   return (
-    <div className="min-h-[85vh] bg-slate-50/50 py-12 px-4 sm:px-6 lg:px-8 flex items-center justify-center">
-      <div className="max-w-md w-full space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-700">
-        <div>
-          <Link
-            href="/"
-            className="inline-flex items-center text-sm text-muted-foreground hover:text-foreground mb-6 transition-colors"
-          >
-            <ArrowLeft className="w-4 h-4 mr-2" />
-            Back to Home
-          </Link>
-        </div>
+    <div className=" flex flex-col">
+      {/* Main Content */}
+      <div className="flex-1 flex items-center justify-center px-4 sm:px-6 lg:px-8 py-6 sm:py-8">
+        <div className="max-w-md w-full max-h-[calc(100vh-3rem)] overflow-y-auto animate-in fade-in slide-in-from-bottom-4 duration-700">
+          <Card className="shadow-lg border-0 bg-white">
+            <CardHeader className="relative space-y-2 text-center pb-8 border-b bg-slate-50/50 rounded-t-xl">
+              <Link
+                href="/"
+                className="absolute left-6 top-6 inline-flex items-center text-sm text-muted-foreground hover:text-foreground transition-colors"
+              >
+                <ArrowLeft className="w-4 h-4 mr-2" />
+                Back
+              </Link>
+              <div className="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-4">
+                <FileDown className="w-6 h-6 text-primary" />
+              </div>
+              <CardTitle className="text-2xl font-bold tracking-tight">
+                Retrieve Application
+              </CardTitle>
+              <CardDescription className="text-base max-w-[280px] mx-auto">
+                Lost your previously downloaded PDF? Enter your details to retrieve it.
+              </CardDescription>
+            </CardHeader>
+            <CardContent className="p-6 sm:p-8">
+              {!result ? (
+                <FormProvider {...form}>
+                  <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+                    <ControlledInput
+                      name="applicationNumber"
+                      label="Application Number"
+                      placeholder="Pharm D - XXXX"
+                    />
 
-        <Card className="shadow-lg border-0 bg-white">
-          <CardHeader className="space-y-2 text-center pb-8 border-b bg-slate-50/50 rounded-t-xl">
-            <div className="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-4">
-              <FileDown className="w-6 h-6 text-primary" />
-            </div>
-            <CardTitle className="text-2xl font-bold tracking-tight">
-              Retrieve Application
-            </CardTitle>
-            <CardDescription className="text-base max-w-[280px] mx-auto">
-              Lost your previously downloaded PDF? Enter your details to retrieve it.
-            </CardDescription>
-          </CardHeader>
-          <CardContent className="p-6 sm:p-8">
-            {!result ? (
-              <FormProvider {...form}>
-                <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-                  <ControlledInput
-                    name="applicationNumber"
-                    label="Application Number"
-                    placeholder="Pharm D - XXXX"
-                  />
+                    <ControlledInput
+                      name="email"
+                      label="Email Address"
+                      type="email"
+                      placeholder="applicant@example.com"
+                    />
 
-                  <ControlledInput
-                    name="email"
-                    label="Email Address"
-                    type="email"
-                    placeholder="applicant@example.com"
-                  />
+                    <ControlledDatePicker name="dateOfBirth" label="Date of Birth" />
 
-                  <ControlledDatePicker name="dateOfBirth" label="Date of Birth" />
-
-                  <Button
-                    type="submit"
-                    className="w-full h-12 text-base rounded-lg mt-4 shadow-sm"
-                    disabled={isVerifying}
-                  >
-                    {isVerifying ? (
-                      <>
-                        <div className="w-4 h-4 border-2 border-primary-foreground border-t-transparent rounded-full animate-spin mr-2" />
-                        Verifying...
-                      </>
-                    ) : (
-                      <>
-                        <Search className="w-4 h-4 mr-2" />
-                        Find Application
-                      </>
-                    )}
-                  </Button>
-                </form>
-              </FormProvider>
-            ) : (
-              <div className="space-y-8 animate-in fade-in slide-in-from-bottom-4">
-                <div className="bg-primary/5 border border-primary/10 rounded-lg p-6 space-y-4 text-center">
-                  <div className="inline-flex items-center justify-center w-12 h-12 rounded-full bg-green-100 text-green-600 mb-2">
-                    <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M5 13l4 4L19 7"
-                      />
-                    </svg>
-                  </div>
-
-                  <div>
-                    <h3 className="font-medium text-lg text-foreground mb-1">Application Found</h3>
-                    <p className="text-sm text-muted-foreground mb-4">
-                      Your application has been verified successfully.
-                    </p>
-                  </div>
-
-                  <div className="bg-white rounded p-4 text-left border shadow-sm">
-                    <div className="grid grid-cols-2 gap-y-3 text-sm">
-                      <span className="text-muted-foreground">Application No.</span>
-                      <span className="font-semibold text-right text-foreground">
-                        {result.applicationNumber}
-                      </span>
-
-                      <span className="text-muted-foreground">Applicant</span>
-                      <span
-                        className="font-medium text-right text-foreground truncate pl-2"
-                        title={result.applicantName}
+                    <Button
+                      type="submit"
+                      className="w-full h-12 text-base rounded-lg mt-4 shadow-sm"
+                      disabled={isVerifying}
+                    >
+                      {isVerifying ? (
+                        <>
+                          <div className="w-4 h-4 border-2 border-primary-foreground border-t-transparent rounded-full animate-spin mr-2" />
+                          Verifying...
+                        </>
+                      ) : (
+                        <>
+                          <Search className="w-4 h-4 mr-2" />
+                          Find Application
+                        </>
+                      )}
+                    </Button>
+                  </form>
+                </FormProvider>
+              ) : (
+                <div className="space-y-8 animate-in fade-in slide-in-from-bottom-4">
+                  <div className="bg-primary/5 border border-primary/10 rounded-lg p-6 space-y-4 text-center">
+                    <div className="inline-flex items-center justify-center w-12 h-12 rounded-full bg-green-100 text-green-600 mb-2">
+                      <svg
+                        className="w-6 h-6"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke="currentColor"
                       >
-                        {result.applicantName}
-                      </span>
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M5 13l4 4L19 7"
+                        />
+                      </svg>
+                    </div>
+
+                    <div>
+                      <h3 className="font-medium text-lg text-foreground mb-1">
+                        Application Found
+                      </h3>
+                      <p className="text-sm text-muted-foreground mb-4">
+                        Your application has been verified successfully.
+                      </p>
+                    </div>
+
+                    <div className="bg-white rounded p-4 text-left border shadow-sm">
+                      <div className="grid grid-cols-2 gap-y-3 text-sm">
+                        <span className="text-muted-foreground">Application No.</span>
+                        <span className="font-semibold text-right text-foreground">
+                          {result.applicationNumber}
+                        </span>
+
+                        <span className="text-muted-foreground">Applicant</span>
+                        <span
+                          className="font-medium text-right text-foreground truncate pl-2"
+                          title={result.applicantName}
+                        >
+                          {result.applicantName}
+                        </span>
+                      </div>
                     </div>
                   </div>
-                </div>
 
-                <div className="space-y-3">
-                  <Button
-                    onClick={handleDownload}
-                    className="w-full h-12 text-base rounded-lg shadow-sm group"
-                    disabled={isDownloading}
-                  >
-                    {isDownloading ? (
-                      <>
-                        <div className="w-4 h-4 border-2 border-primary-foreground border-t-transparent rounded-full animate-spin mr-2" />
-                        Generating PDF...
-                      </>
-                    ) : (
-                      <>
-                        <FileDown className="w-4 h-4 mr-2 group-hover:-translate-y-0.5 transition-transform" />
-                        Download Application PDF
-                      </>
-                    )}
-                  </Button>
+                  <div className="space-y-3">
+                    <Button
+                      onClick={handleDownload}
+                      className="w-full h-12 text-base rounded-lg shadow-sm group"
+                      disabled={isDownloading}
+                    >
+                      {isDownloading ? (
+                        <>
+                          <div className="w-4 h-4 border-2 border-primary-foreground border-t-transparent rounded-full animate-spin mr-2" />
+                          Generating PDF...
+                        </>
+                      ) : (
+                        <>
+                          <FileDown className="w-4 h-4 mr-2 group-hover:-translate-y-0.5 transition-transform" />
+                          Download Application PDF
+                        </>
+                      )}
+                    </Button>
 
-                  <Button
-                    variant="ghost"
-                    className="w-full"
-                    onClick={() => {
-                      setResult(null);
-                      form.reset();
-                    }}
-                  >
-                    Look up another application
-                  </Button>
+                    <Button
+                      variant="ghost"
+                      className="w-full"
+                      onClick={() => {
+                        setResult(null);
+                        form.reset();
+                      }}
+                    >
+                      Look up another application
+                    </Button>
+                  </div>
                 </div>
-              </div>
-            )}
-          </CardContent>
-        </Card>
+              )}
+            </CardContent>
+          </Card>
+        </div>
       </div>
     </div>
   );

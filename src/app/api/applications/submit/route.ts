@@ -2,6 +2,7 @@ import { apiResponse } from '@/lib/api-response';
 import { ApplicationService } from '@/services/application.service';
 import { applicationSchema } from '@/features/application/schemas/application.schema';
 import { IApplication } from '@/types/application';
+import { normalizeDateToMidnightUTC } from '@/utils';
 
 export async function POST(request: Request) {
   try {
@@ -17,14 +18,20 @@ export async function POST(request: Request) {
 
     // We extract the url for MongoDB
     const docToSave = {
-      personalDetails: applicationData.personalDetails,
+      personalDetails: {
+        ...applicationData.personalDetails,
+        dateOfBirth: normalizeDateToMidnightUTC(applicationData.personalDetails.dateOfBirth),
+      },
       qualification: {
         ...applicationData.qualification,
         certificate: applicationData.qualification.certificate?.url || undefined,
       },
       marks: applicationData.marks || [],
       bankDetails: applicationData.bankDetails,
-      declaration: applicationData.declaration,
+      declaration: {
+        ...applicationData.declaration,
+        date: normalizeDateToMidnightUTC(applicationData.declaration.date),
+      },
       uploads: {
         photo: applicationData.uploads.photo?.url,
         signature: applicationData.uploads.signature?.url,

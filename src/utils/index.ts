@@ -35,6 +35,26 @@ export function normalizeDobForComparison(dob: Date | string): string {
 }
 
 /**
+ * Normalize a date to midnight UTC to avoid timezone conversion issues.
+ * This ensures dates remain consistent across all timezones when stored in MongoDB.
+ * @param date The date to normalize
+ * @returns Date object set to midnight UTC
+ */
+export function normalizeDateToMidnightUTC(date: Date | string): Date {
+  if (!date) return new Date();
+  const dateObj = typeof date === 'string' ? parseISO(date) : date;
+  if (!isValid(dateObj)) return new Date();
+
+  // Extract year, month, day in local timezone
+  const year = dateObj.getFullYear();
+  const month = dateObj.getMonth();
+  const day = dateObj.getDate();
+
+  // Create new Date at midnight UTC
+  return new Date(Date.UTC(year, month, day, 0, 0, 0, 0));
+}
+
+/**
  * Calculate age from a birth date
  * @param birthDate The date of birth
  * @returns The calculated age in years
