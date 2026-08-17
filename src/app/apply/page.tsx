@@ -3,8 +3,8 @@ import { ApplicationForm } from '@/features/application/components/ApplicationFo
 import { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: 'Apply for Admission | B.Pharm',
-  description: 'Multi-step application form for B.Pharm admission.',
+  title: 'Apply for Admission | Pharm D',
+  description: 'Multi-step application form for Pharm D admission.',
 };
 
 export default function ApplyPage() {

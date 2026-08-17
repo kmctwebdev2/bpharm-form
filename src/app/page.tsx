@@ -14,7 +14,7 @@ export default function Home() {
             <span className="block text-primary mt-2">2026 Admissions</span>
           </h1>
           <p className="text-lg md:text-xl text-muted-foreground leading-relaxed max-w-xl mx-auto">
-            Complete your B.Pharm or Pharm D application securely in minutes.
+            Complete your Pharm D application securely in minutes.
           </p>
         </div>
 
